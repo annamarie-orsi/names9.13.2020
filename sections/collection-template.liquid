@@ -1,0 +1,443 @@
+
+{%- assign max_height = 345 -%}
+{%- assign limit = 50 -%}
+{% assign intropack = 'false' %}
+
+{%- for product in collection.products -%}
+{% assign productTitle = product.title | downcase %}
+{% if productTitle contains 'ntro' %}
+  {% assign intropack = 'true' %}
+{% endif %}
+{% endfor %}
+
+
+
+{% paginate collection.products by 500 %}
+
+<div class="container-fluid px-md-5 pb-5 mb-5 pt-md-5 mt-5" data-section-id="{{ section.id }}" data-section-type="collection-template" data-vendor="{{collection.handle}}">
+
+  <header class="grid mb">
+
+    <div class="grid__item medium-up--one-third text-left" data-product-type="">
+
+      <h1>
+
+        <span class="visually-hidden"> {{ 'collections.general.collection_label' | t }}: </span>
+
+        {{ collection.title }}
+
+      </h1>
+
+      <p class="text-uppercase">
+
+       <span>{{ collection.metafields['additional_info']['location'] }}</span>
+
+      </p>
+
+      {% if intropack == 'true' %}
+      <p><br/><br/>
+      <a class="text-link text-smaller" href="#intropack">View Intro Orders</a>
+      </p>
+      {% endif %}
+
+    </div>
+
+    <div class="grid__item medium-up--one-third">
+
+      <p class="text-left">
+        {% if collection.products.size == 0 %}
+          Coming Soon
+        {% else %}
+          {{ collection.description }}
+        {% endif %}
+        
+      </p>
+
+      {% if collection.metafields['additional_info']['disclaimer'] %}
+      <hr class="small"/>
+        <p>{{collection.metafields['additional_info']['disclaimer']}}</p>
+
+      {% else %}
+
+        {% if collection.metafields['additional_info']['initial_order_total'] %}
+        <hr class="small">
+        <div class="grid grid--no-gutters">
+          <div class="grid__item two-thirds">
+            <p>Minimum<br/>Order Total</p>
+          </div>
+          <div class="grid__item one-third text-right">
+            <p>{{collection.metafields['additional_info']['initial_order_total']}}</p>
+          </div>
+        </div>
+         
+        {% endif %}
+
+        {% if collection.metafields['additional_info']['initial_order_qty'] %}
+        <hr class="small">
+          <div class="grid grid--no-gutters">
+            <div class="grid__item one-half">
+              <p>Minimum<br/>Order Qty</p>
+            </div>
+            <div class="grid__item one-half text-right">
+              <p>{{ collection.metafields['additional_info']['initial_order_qty'] | replace: '//','<br>'}}</p>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if collection.metafields['additional_info']['estimated_ship_date'] %}
+        <hr class="small">
+          <div class="grid grid--no-gutters">
+            <div class="grid__item two-thirds">
+              <p>Estimated<br/>Ship Date</p>
+            </div>
+            <div class="grid__item one-third text-right">
+              <p>{{collection.metafields['additional_info']['estimated_ship_date']}}</p>
+            </div>
+          </div>
+        {% endif %}
+
+
+      {% endif %}
+
+    </div>
+
+    <div class="grid__item medium-up--one-third medium-up--text-right">
+      <div class="grid grid--half-gutters grid--table">
+        <div class="grid__item">
+          <button class="btn btn-light w-100" name="button" href="{{section.settings.pressbutton}}"> Brand Materials</button><br/><br/>
+          <button class="btn btn-light w-100" name="button" href="{{section.settings.pressbutton}}"> Request Samples</button><br/><br/>
+          <button class="btn btn-light w-100" name="button" href="{{section.settings.pressbutton}}">Online Appointment</button><br/><br/>
+          <button class="btn btn-light w-100" name="button" href="mailto:info@names.life">Questions?</button>
+        </div>
+      </div>
+      
+
+    </div>
+
+  </header>
+
+  <div class="w-100">
+
+{%- for product_type in shop.types reversed -%}
+        {%- unless product_type contains 'NTRO' -%}
+          {%- for product in collection.products -%}
+            {% if product.type == product_type %}
+
+            {% assign productTypeActual = product.type %}
+            <div class="w-100" id="{{productTypeActual | handleize}}">
+              <hr />
+              <div class="grid">
+                <div class="grid__item">
+                  <h2 class="h1 text-left">
+                    {% if collection.handle contains 'kate' %}
+                    {{productTypeActual}}
+                    {% else %}
+                    {{productTypeActual | capitalize}}
+                    
+                    {% endif %}
+                    
+                  
+                  </h2>
+                </div>
+              </div>
+              <ul class="grid grid--uniform">
+              
+                {%- for product in collection.products -%}
+                {% assign productTitle = product.title | downcase %}
+                    {% if product.type == productTypeActual %}
+                      {% unless productTitle contains 'ntro' %}
+                      {% unless productTitle contains 'ester' %}
+                      {% unless productTitle contains 'ample' %}
+                      {% if product.images.size > 0 %}
+                        <li class="grid__item {% if collection.handle contains 'mage' %}medium-up--one-half pgi-land {%else%}medium-up--one-third  pgi{%endif%}" {% if product.tags contains 'our-picks' %}data-our-picks="true"{% endif %}>
+
+                      <a class="product-card" href="{{ product.url | within: collection }}">
+                        <div class="ll">
+                          <img class="megafaded" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="{{ product.featured_image.src | img_url: '1280x' }}" alt="{{product.title}}">
+                        </div>
+                        <div class="row w-100 pt-3 align-items-end pb-0 d-flex justify-content-between m-0">
+                          <p class="product-title m-0">{{ product.title }}</p>
+                          {% unless customer.tags contains "Approved" %}
+
+                          <p>
+                              {% if
+                                collection.handle contains 'mad-paris' or
+                                collection.handle contains 'mage' or
+                                collection.handle contains 'hasselblad'
+                              %}
+                              POA
+
+                              {% elsif
+                                product.metafields['additional_info']['whs_ea'] 
+                              %}
+                              € {{product.metafields['additional_info']['whs_ea'] | replace: '.00','.0' | replace: '.0','.00'  | replace: '.',','}} WHS
+                              {% else %}
+                              {{ product.price | money }} WHS
+                              {%endif%}
+
+                          </p>
+                          {% endunless %}
+                        </div>
+                        <div class="row d-flex pt-2 m-0">
+                          <p>
+                              {{ product.metafields['additional_info']['weight'] }}
+                          </p>
+                        </div>
+
+                      </a>
+                    </li>
+                      {% else %}
+                        <li class="grid__item {% if collection.handle contains 'mage' %}medium-up--one-half pgi-land {%else%}medium-up--one-third  pgi{%endif%}" {% if product.tags contains 'our-picks' %}data-our-picks="true"{% endif %}>
+
+                      <a class="product-card" href="{{ product.url | within: collection }}">
+                        <div class="no-image-product-card"></div>
+                        <div class="row w-100 pt-3 align-items-end pb-0 d-flex justify-content-between m-0">
+                          <p class="product-title m-0">{{ product.title }}</p>
+                          {% unless customer.tags contains "Approved" %}
+
+                          <p>
+                              {% if collection.handle contains 'mad-paris' or collection.handle contains 'mage'%}POA{% else %}{{ product.price | money }} WHS{%endif%}
+                          </p>
+                          {% endunless %}
+                        </div>
+                        <div class="row d-flex pt-2 m-0">
+                          <p>
+                              {{ product.metafields['additional_info']['weight'] }}
+                          </p>
+                        </div>
+
+                      </a>
+                    </li>
+                      {% endif %}
+                    
+                      {% endunless %}
+                      {% endunless %}
+                      {% endunless %}
+                    {% endif %}
+                  {%- endfor -%}
+                  {% break %}
+                  {% endif %}
+                {%- endfor -%}
+                </ul>
+
+  {%- endunless -%}
+{%- endfor -%}
+
+</div>
+
+
+{% if intropack == 'true' %}
+<div class="w-100" id="intropack">
+<hr />
+<div class="grid">
+
+  <div class="grid__item medium-up--one-third">
+    <h2 class="h1">
+    Intro Selection
+    </h2><br/><br/>
+    <p>{{ collection.metafields['additional_info']['intro'] }}</p>
+  </div>
+
+  <div class="grid__item medium-up--two-thirds">
+
+  {%- for product in collection.products -%}
+    {% assign productTitle = product.title | downcase %}
+    {% if productTitle contains 'ntro' %}
+    <ul class="grid grid--uniform">
+
+    
+
+    {% if product.images.size > 0 %}
+
+    <li class="grid__item pgi  intropack-pgi" {% if product.tags contains 'our-picks' %}data-our-picks="true"{% endif %}>
+
+      <a class="product-card" href="{{ product.url | within: collection }}">
+        <div class="ll">
+          <img class="megafaded" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="{{ product.featured_image.src | img_url: '1280x' }}" alt="{{product.title}}">
+        </div>
+        <div class="row w-100 pt-3 align-items-end pb-0 d-flex justify-content-between m-0">
+          <p class="product-title m-0">{{ product.title }}</p>
+          {% unless customer.tags contains "Approved" %}
+
+          <p>
+              {% if collection.handle contains 'mad-paris' or collection.handle contains 'mage'%}POA{% else %}{{ product.price | money }} WHS{%endif%}
+          </p>
+          {% endunless %}
+        </div>
+        <div class="row d-flex pt-2 m-0">
+          <p>
+              {{ product.metafields['additional_info']['weight'] }}
+          </p>
+        </div>
+
+      </a>
+    </li>
+
+    {% else %}
+    <li class="grid__item pgi intropack-pgi" {% if product.tags contains 'our-picks' %}data-our-picks="true"{% endif %}>
+
+      <a class="product-card" href="{{ product.url | within: collection }}">
+        <div class="no-image-product-card"></div>
+        <div class="row w-100 pt-3 align-items-end pb-0 d-flex justify-content-between m-0">
+          <p class="product-title m-0">{{ product.title }}</p>
+          {% unless customer.tags contains "Approved" %}
+          <p>
+              {% if collection.handle contains 'mad-paris' or collection.handle contains 'mage'%}POA{% else %}{{ product.price | money }} WHS{%endif%}
+          </p>
+          {% endunless %}
+        </div>
+        <div class="row d-flex pt-2 m-0">
+          <p>
+              {{ product.metafields['additional_info']['weight'] }}
+          </p>
+        </div>
+
+      </a>
+    </li>
+
+    {% endif %}
+    
+  </ul>
+    {% endif %}
+  {%- endfor -%}
+
+</div>
+
+</div>
+{% endif %}
+
+  <!-- <div class="container pt-4 mt-4" id="Collection">
+    {% if section.settings.layout == 'grid' %}
+        {%- assign grid_item_width = 'small--one-half medium-up--one-third' -%}
+      <ul class="grid--uniform{% if collection.products_count > 0 %} grid--view-items{% endif %}">
+        {% for product in collection.products %}
+          <li class="grid__item grid__item--{{section.id}} {{ grid_item_width }}">
+            {% include 'product-card-grid', max_height: 345, product: product, show_vendor: section.settings.show_vendor %}
+          </li>
+        {% else %}
+          {% comment %}
+          Add default products to help with onboarding for collections/all only.
+
+          The onboarding styles and products are only loaded if the
+          store has no products.
+          {% endcomment %}
+
+          {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0 %}
+            <li class="grid__item">
+              <div class="grid grid--uniform">
+                {% for i in (1..limit) %}
+                  <div class="grid__item {{ grid_item_width }}">
+                    <div class="grid-view-item">
+                      <a href="#" class="grid-view-item__link">
+                        <div class="grid-view-item__image">
+                          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                          {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                        <div class="h4 grid-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+                        <div class="grid-view-item__meta">
+                          <span class="product-price__price">$19.99</span>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </li>
+          {% else %}
+            {%- assign is_empty_collection = true -%}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% else %}
+      <ul class="list-view-items">
+        {% for product in collection.products %}
+          <li class="list-view-item">
+            {% include 'product-card-list', product: product, show_vendor: section.settings.show_vendor %}
+          </li>
+        {% else %}
+
+          {% comment %}
+          Add default products to help with onboarding for collections/all only.
+
+          The onboarding styles and products are only loaded if the
+          store has no products.
+          {% endcomment %}
+          {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0%}
+            {% for i in (1..4) %}
+              <li class="list-view-item">
+                <a href="#" class="list-view-item__link">
+                  <div class="list-view-item__image-column">
+                    <div class="list-view-item__image-wrapper">
+                      <div class="list-view-item__image">
+                        {% capture current %}{% cycle 1, 2, 3, 4 %}{% endcapture %}
+                        {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="list-view-item__title-column">
+                    <div class="list-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+                  </div>
+
+                  <div class="list-view-item__price-column">
+                    <span class="product-price__price">$19.99</span>
+                  </div>
+                </a>
+              </li>
+            {% endfor %}
+          {% else %}
+            {%- assign is_empty_collection = true -%}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if is_empty_collection %}
+      <div class="grid__item small--text-center">
+        <p class="text-center">{{ 'collections.general.no_matches' | t }}</p>
+      </div>
+    {% endif %}
+
+    {%- if paginate.pages > 1 -%}
+      {% include 'pagination', paginate: paginate %}
+    {%- endif -%}
+  </div> -->
+
+</div>
+
+{% endpaginate %}
+
+
+{% schema %}
+{
+  "name": {
+    "en": "Collection"
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "pressbuttontext",
+      "label": {
+        "en": "Press Button Text"
+      }
+    },
+    {
+      "type": "url",
+      "id": "pressbutton",
+      "label": {
+        "en": "Press Button"
+      }
+    }
+  ],
+  "presets": [
+    {
+      "name": {
+        "en": "Collection"
+      },
+      "category": {
+        "en": "Text"
+      }
+    }
+  ]
+}
+{% endschema %}

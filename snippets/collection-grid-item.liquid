@@ -1,0 +1,27 @@
+<a class="grid"
+
+href="{{collection.url}}"
+
+
+>
+  <div class="grid__item one-third"  >
+      <div class="text-uppercase">
+        <p>{{ collection.title }}</p></div>
+  </div>
+  <div class="grid__item one-third" >
+      <div class="text-uppercase">
+        <p>{{ collection.metafields['additional_info']['category'] }}</p>
+      </div>
+  </div>
+  <div class="grid__item one-third text-right"  >
+      <div class="text-uppercase">
+        <p>{{ collection.metafields['additional_info']['location'] }}</p>
+      </div>
+  </div>
+  <div class="grid__item one-whole">
+    <hr class="small">
+  </div>
+</a>
+
+<div class="featured_brand_image_collection" style="background-image:url('{{ collection.image | img_url: 'master' }}')">
+</div>

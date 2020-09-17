@@ -1,0 +1,88 @@
+<footer class="px-0 bg-names-transparent py-md-3 footer ">
+
+  <div class="row d-flex justify-content-between w-100 m-0 px-md-5 border-bottom-footer ">
+
+    <div class="col footer-col py-3 py-md-0 text-md-left text-center border-right-footer">
+
+      {% if template == "index"%}
+      <a class="fc-names footer-links" href="/collections">LIFE ITEMS</a>
+      {% else%}
+      <a class="fc-names d-none d-md-inline-block footer-links">&copy; NAMES, {{ 'now' | date: "%Y" }}</a>
+      <a class="fc-names footer-links d-md-none" href="{{section.settings.link2href}}">{{section.settings.link2}}</a>
+      {%endif%}
+
+    </div>
+
+    <div class="col footer-col py-3 py-md-0 text-center text-md-right ">
+      {% if template == "index"%}
+      <a class="fc-names footer-links" href="/pages/wholesale-signup-page">WHOLESALE</a>
+      {% else %}
+      <a class="fc-names footer-links d-none d-md-inline-block" href="{{section.settings.link2href}}">{{section.settings.link2}},</a>
+      <a class="fc-names footer-links" href="{{section.settings.link1href}}">{{section.settings.link1}},</a>
+      <a class="fc-names footer-links" href="/faqs/">FAQs</a>
+      {% endif %}
+
+    </div>
+
+  </div>
+
+  <div class="row d-block d-md-none w-100 m-0 px-md-5 ">
+
+    <div class="col footer-col py-3 py-md-0 text-md-left text-center">
+
+      <a class="fc-names footer-links">&copy; NAMES,{{ 'now' | date: "%Y" }}</a>
+
+    </div>
+
+  </div>
+
+</footer>
+
+{% schema %}
+
+{
+  "name": {
+    "en": "Footer"
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "link1",
+      "label": {
+        "en": "Link 1"
+      }
+    },
+    {
+      "type": "url",
+      "id": "link1href",
+      "label": {
+        "en": "Link 1 href"
+      }
+    },
+    {
+      "type": "text",
+      "id": "link2",
+      "label": {
+        "en": "Link 2"
+      }
+    },
+    {
+      "type": "url",
+      "id": "link2href",
+      "label": {
+        "en": "Link 2 href"
+      }
+    }
+  ],
+  "presets": [
+    {
+      "name": {
+        "en": "Footer Link Text"
+      },
+      "category": {
+        "en": "Text"
+      }
+    }
+  ]
+}
+{% endschema %}

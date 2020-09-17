@@ -1,0 +1,62 @@
+<div class="container-fluid names-video p-0" data-section-id="{{ section.id }}" data-section-type="video-section">
+
+{% if section.settings.image %}src
+  <div class=" names-video-hero">
+
+    <img id="heroimg"
+         class="lazyload"
+         src="{{ section.settings.image | img_url:'master' }}"
+         alt="heroimage">
+      </div>
+
+    </div>
+
+  {% else %}
+
+<div class=" {% if section.settings.video_link %} names-video-hero lazyload {% endif %} {% if section.settings.image %} d-none {% endif%}">
+
+      <video playsinline autoplay muted loop poster="" id="herovid">
+        <source src="" type="video/mp4">
+      </video>
+
+  </div>
+
+  {% endif %}
+
+</div>
+
+
+{% schema %}
+{
+  "name": {
+    "en": "Video Names"
+  },
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": {
+        "en": "Image"
+      }
+    },
+    {
+      "type": "url",
+      "id": "video_link",
+      "label": {
+        "en": "Video link"
+      }
+    }
+  ],
+  "presets": [
+    {
+      "name": {
+        "en": "Names Video"
+      },
+      "category": {
+        "en": "Image"
+      }
+    }
+  ]
+}
+{% endschema %}

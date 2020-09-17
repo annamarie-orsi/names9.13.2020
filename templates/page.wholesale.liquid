@@ -1,0 +1,267 @@
+<div class="container-fluid mt-5 pt-md-5">
+
+  <div class="container pt-5">
+
+    <div class="row">
+
+      <div class="col-md-4 col-12 pl-0 pr-md-5 wholesale-apply-content">
+
+        {{ page.content }}
+
+      </div>
+
+      <div class="col pb-5 pb-md-0">
+
+      </div>
+
+      <div class="col-md-6 col-12 pr-md-0">
+
+        <div class="form-vertical">
+
+          {%- assign formId = 'RegisterForm' -%}
+          {% form 'create_customer', id: formId, novalidate: 'novalidate' %}
+          {% include 'form-status', form: form, form_id: formId %}
+
+
+            <input type="text" placeholder="First Name" name="customer[first_name]" id="{{ formId }}-FirstName" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocomplete="given-name">
+
+            <input type="text" placeholder="Last Name" name="customer[last_name]" id="{{ formId }}-LastName" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocomplete="family-name">
+
+            <input type="text" placeholder="Company" name="customer[company]" id="{{ formId }}-Company" {% if form.company %}value="{{ form.company }}"{% endif %} autocomplete="company">
+
+            <input
+              type="email"
+              placeholder="Email Address"
+              name="customer[email]"
+              id="{{ formId }}-email"
+              class="{% if form.errors contains 'email' %} input--error{% endif %}"
+              {% if form.email %} value="{{ form.email }}"{% endif %}
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="email"
+              aria-required="true"
+              {%- if form.errors contains 'email' -%}
+                class="input--error"
+                aria-invalid="true"
+                aria-describedby="{{ formId }}-email-error"
+              {%- endif -%}
+            >
+            {%- if form.errors contains 'email' -%}
+              <span id="{{ formId }}-email-error" class="input-error-message">
+                <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+                {% include 'icon-error' %}
+                <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+              </span>
+            {%- endif -%}
+
+            <div class="py-4"></div>
+
+            <input type="text" placeholder="Street Address 1" name="customer[address1]" id="{{ formId }}-StreetAddress1" {% if form.address1 %}value="{{ form.address1 }}"{% endif %} autocomplete="address1">
+
+            <input type="text" placeholder="Street Address 2" name="customer[address2]" id="{{ formId }}-StreetAddress2" {% if form.address2 %}value="{{ form.address2 }}"{% endif %} autocomplete="address2">
+
+            <input type="text" placeholder="City" name="customer[city]" id="{{ formId }}-City" {% if form.city %}value="{{ form.city }}"{% endif %} autocomplete="city">
+
+            <input type="text" placeholder="Country / Region / Location" name="customer[location]" id="{{ formId }}-Location" {% if form.location %}value="{{ form.location }}"{% endif %} autocomplete="location">
+
+            <div class="py-4"></div>
+
+            <div class="container border-wholesale border-dark selectbrands">
+
+              <div class="selecttitle"><p class="py-4">WHAT ARE YOU HERE FOR?</p></div>
+
+              <div class="px-5 py-5 mx-4 pt-4">
+
+              {% assign department = 'Wellness' %}
+              <div class="row d-flex justify-content-between w-100 border-bottom-wholesale py-3" style="position:relative;">
+
+                <label for="{{ formId }}-{{department}}"><p>{{ department }}</p></label>
+                <input type="checkbox" name="customer[{{department}}]" id="{{ formId }}-{{department}}" {% if form.{{department}} %}value="{{ form.{{department}} }}"{% endif %} style="position:absolute;right:-1%;opacity:0;">
+                <span class="circularcheckbox"></span>
+              </div>
+              {% assign department = 'Fragrance' %}
+              <div class="row d-flex justify-content-between w-100 border-bottom-wholesale py-3" style="position:relative;">
+
+                <label for="{{ formId }}-{{department}}"><p>{{ department }}</p></label>
+                <input type="checkbox" name="customer[{{department}}]" id="{{ formId }}-{{department}}" {% if form.{{department}} %}value="{{ form.{{department}} }}"{% endif %} style="position:absolute;right:-1%;opacity:0;">
+                <span class="circularcheckbox"></span>
+              </div>
+              {% assign department = 'Beauty' %}
+              <div class="row d-flex justify-content-between w-100 border-bottom-wholesale py-3" style="position:relative;">
+
+                <label for="{{ formId }}-{{department}}"><p>{{ department }}</p></label>
+                <input type="checkbox" name="customer[{{department}}]" id="{{ formId }}-{{department}}" {% if form.{{department}} %}value="{{ form.{{department}} }}"{% endif %} style="position:absolute;right:-1%;opacity:0;">
+                <span class="circularcheckbox"></span>
+              </div>
+              {% assign department = 'Home' %}
+              <div class="row d-flex justify-content-between w-100 border-bottom-wholesale py-3" style="position:relative;">
+
+                <label for="{{ formId }}-{{department}}"><p>{{ department }}</p></label>
+                <input type="checkbox" name="customer[{{department}}]" id="{{ formId }}-{{department}}" {% if form.{{department}} %}value="{{ form.{{department}} }}"{% endif %} style="position:absolute;right:-1%;opacity:0;">
+                <span class="circularcheckbox"></span>
+              </div>
+              {% assign department = 'Technology' %}
+              <div class="row d-flex justify-content-between w-100 border-bottom-wholesale py-3" style="position:relative;">
+
+                <label for="{{ formId }}-{{department}}"><p>{{ department }}</p></label>
+                <input type="checkbox" name="customer[{{department}}]" id="{{ formId }}-{{department}}" {% if form.{{department}} %}value="{{ form.{{department}} }}"{% endif %} style="position:absolute;right:-1%;opacity:0;">
+                <span class="circularcheckbox"></span>
+              </div>
+              {% assign department = 'Arts & Prints' %}
+              <div class="row d-flex justify-content-between w-100 border-bottom-wholesale py-3" style="position:relative;">
+
+                <label for="{{ formId }}-{{department}}"><p>{{ department }}</p></label>
+                <input type="checkbox" name="customer[{{department}}]" id="{{ formId }}-{{department}}" {% if form.{{department}} %}value="{{ form.{{department}} }}"{% endif %} style="position:absolute;right:-1%;opacity:0;">
+                <span class="circularcheckbox"></span>
+              </div>
+              {% assign department = 'Active' %}
+              <div class="row d-flex justify-content-between w-100 border-bottom-wholesale py-3" style="position:relative;">
+
+                <label for="{{ formId }}-{{department}}"><p>{{ department }}</p></label>
+                <input type="checkbox" name="customer[{{department}}]" id="{{ formId }}-{{department}}" {% if form.{{department}} %}value="{{ form.{{department}} }}"{% endif %} style="position:absolute;right:-1%;opacity:0;">
+                <span class="circularcheckbox"></span>
+              </div>
+              {% assign department = 'Travel' %}
+              <div class="row d-flex justify-content-between w-100 border-bottom-wholesale py-3" style="position:relative;">
+
+                <label for="{{ formId }}-{{department}}"><p>{{ department }}</p></label>
+                <input type="checkbox" name="customer[{{department}}]" id="{{ formId }}-{{department}}" {% if form.{{department}} %}value="{{ form.{{department}} }}"{% endif %} style="position:absolute;right:-1%;opacity:0;">
+                <span class="circularcheckbox"></span>
+              </div>
+              {% assign department = 'Limited-edition' %}
+              <div class="row d-flex justify-content-between w-100 border-bottom-wholesale py-3" style="position:relative;">
+
+                <label for="{{ formId }}-{{department}}"><p>{{ department }}</p></label>
+                <input type="checkbox" name="customer[{{department}}]" id="{{ formId }}-{{department}}" {% if form.{{department}} %}value="{{ form.{{department}} }}"{% endif %} style="position:absolute;right:-1%;opacity:0;">
+                <span class="circularcheckbox"></span>
+              </div>
+
+
+
+
+
+              
+              
+
+              </div>
+
+            </div>
+
+            <div class="py-4"></div>
+
+            <input
+              type="password"
+              placeholder="Password"
+              name="customer[password]"
+              id="{{ formId }}-password"
+              class="{% if form.errors contains 'password' %} input--error{% endif %}"
+              aria-required="true"
+              {%- if form.errors contains 'password' -%}
+                class="input--error"
+                aria-invalid="true"
+                aria-describedby="{{ formId }}-password-error"
+              {%- endif -%}
+            >
+
+            <input type="passord" placeholder="Confirm Password" id="">
+
+            {%- if form.errors contains 'password' -%}
+              <span id="{{ formId}}-password-error" class="input-error-message">
+                {% include 'icon-error' %}
+                <span>{{ form.errors.translated_fields['password'] | capitalize }} {{ form.errors.messages['password'] }}.</span>
+              </span>
+            {%- endif -%}
+
+            <div class="row py-5">
+
+              <p class="text-center col-8">
+                <input type="submit" value="APPLY" class="btn w-100">
+              </p>
+              <p class="text-center col-4">
+              <a href="/index"><button type="button" class="btn w-100" name="button"> BACK</button></a>
+              </p>
+            </div>
+
+          {% endform %}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- <div class="page-width">
+  <div class="grid">
+    <div class="grid__item medium-up--one-half medium-up--push-one-quarter">
+
+      <div class="form-vertical">
+
+        <h1 class="text-center">{{ 'customer.register.title' | t }}</h1>
+
+        {%- assign formId = 'RegisterForm' -%}
+        {% form 'create_customer', id: formId, novalidate: 'novalidate' %}
+          {% include 'form-status', form: form, form_id: formId %}
+
+          <label for="{{ formId }}-FirstName">{{ 'customer.register.first_name' | t }}</label>
+          <input type="text" name="customer[first_name]" id="{{ formId }}-FirstName" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocomplete="given-name">
+
+          <label for="{{ formId }}-LastName">{{ 'customer.register.last_name' | t }}</label>
+          <input type="text" name="customer[last_name]" id="{{ formId }}-LastName" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocomplete="family-name">
+
+          <label for="{{ formId }}-email">{{ 'customer.register.email' | t }}</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="{{ formId }}-email"
+            class="{% if form.errors contains 'email' %} input--error{% endif %}"
+            {% if form.email %} value="{{ form.email }}"{% endif %}
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            aria-required="true"
+            {%- if form.errors contains 'email' -%}
+              class="input--error"
+              aria-invalid="true"
+              aria-describedby="{{ formId }}-email-error"
+            {%- endif -%}
+          >
+          {%- if form.errors contains 'email' -%}
+            <span id="{{ formId }}-email-error" class="input-error-message">
+              <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+              {% include 'icon-error' %}
+              <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+            </span>
+          {%- endif -%}
+
+          <label for="{{ formId }}-password">{{ 'customer.register.password' | t }}</label>
+          <input
+            type="password"
+            name="customer[password]"
+            id="{{ formId }}-password"
+            class="{% if form.errors contains 'password' %} input--error{% endif %}"
+            aria-required="true"
+            {%- if form.errors contains 'password' -%}
+              class="input--error"
+              aria-invalid="true"
+              aria-describedby="{{ formId }}-password-error"
+            {%- endif -%}
+          >
+          {%- if form.errors contains 'password' -%}
+            <span id="{{ formId}}-password-error" class="input-error-message">
+              {% include 'icon-error' %}
+              <span>{{ form.errors.translated_fields['password'] | capitalize }} {{ form.errors.messages['password'] }}.</span>
+            </span>
+          {%- endif -%}
+
+          <p class="text-center">
+            <input type="submit" value="{{ 'customer.register.submit' | t }}" class="btn">
+          </p>
+
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</div> -->

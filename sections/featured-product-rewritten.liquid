@@ -1,0 +1,48 @@
+<div class="collection-listing container pb-5 mb-5">
+
+  <ul class="featured-brands">
+    {% for collection in collections %}
+    <li>
+      <div class="featured_brand_image" style="background-image:url('{{ collection.image | img_url: 'master' }}')">
+      </div>
+
+          <div class="bit-wrap">
+          <h3 class="h1">{{collection.title}}</h3>
+          <div class="info-wrap">
+            <span class="type">{{ collection.metafields['additional_info']['type'] }}</span><br/>
+            <span class="location">{{ collection.metafields['additional_info']['location'] }}</span>
+          </div>
+        </div>
+
+      <div class="brand-bio">
+        {{ collection.description }}
+        <a class="btn" href="{{collection.url}}">Discover</a>
+      </div>
+      <div class="close-it">
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  
+  
+  
+</div>
+
+{% schema %}
+{
+  "name": {
+    "en": "Brands Listing"
+  },
+  "class": "index-section",
+  "presets": [
+    {
+      "name": {
+        "en": "Brand Listing"
+      },
+      "category": {
+        "en": "Image"
+      }
+    }
+  ]
+}
+{% endschema %}

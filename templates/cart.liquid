@@ -1,0 +1,628 @@
+{% assign shopifyStorefrontToken = "0552d9aea6241c1d923471d55b5e1111" %}
+
+<!-- /templates/cart.liquid -->
+
+{{ '//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' | script_tag }}
+{{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+
+<style>
+
+  /* Quick stylings */
+
+  .vendor-cart {
+
+        display: flex;
+        border-bottom: 1px solid black;
+  }
+
+  .break{
+
+    padding-bottom: 150px;
+
+  }
+
+  .cartinfo{
+
+    font-size: 12px !important;
+
+  }
+
+  .vendor-cart-order {
+    flex-basis: 33%;
+  }
+
+  .vendor-items {
+    list-style: none;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    flex-basis: 67%;
+    padding: 3% 0% 3% 0%;
+    flex-wrap: wrap;
+    border-right: 1px solid black;
+
+  }
+
+  .vendor-items .item {
+
+    width: 33%;
+    padding: 0% 5% 0% 0%;
+
+  }
+
+  .remove-button {
+
+    background-color: transparent;
+    border: 0px;
+    float: right;
+
+  }
+
+  .cart__product-name{
+
+    text-transform: uppercase;
+    font-size: 13px !important;
+
+  }
+
+  .editbtn{
+
+    padding: 10px 15px 10px 15px;
+    font-size: .6rem !important;
+
+  }
+
+  .productcart-varienttitle, .productcart-type{
+
+    font-size: 12px !important;
+
+  }
+  .cart-heading{
+
+    padding-top: 130px;
+    border-bottom: 1px solid black;
+
+  }
+
+  .subtotal-cart, .payment-cart{
+
+    border-top: 1px solid black;
+
+  }
+
+  .shipping-cart{
+
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+
+  }
+
+  .cancel-vendor-order{
+
+    font-size: .8rem !important;
+    padding: 20px 0px 0px 30px;
+
+
+  }
+
+  .order-button{
+
+    background-color: #3d3b36;
+    color: #EDE9DF;
+
+
+  }
+
+  .order-button:hover{
+
+    background-color: transparent !important;
+    color: #3d3b36 !important;
+
+  }
+
+  @media only screen and (max-width: 550px) {
+
+    .vendor-cart{
+
+      display: block;
+
+    }
+
+    .cancel-vendor-order, .order-button{
+
+      float: none;
+      width: 100%;
+      text-align: center;
+
+
+    }
+
+    .vendor-items{
+
+      border: 0px;
+
+    }
+
+    .vendor-items .item{
+
+      width: 50%;
+      padding: 0% 2% 0% 0%;
+
+
+    }
+
+    .editbtn{
+
+      width: 100%;
+
+    }
+
+
+
+
+  }
+
+  @media only screen and (min-width: 550px) {
+
+
+
+    .cancel-vendor-order, .order-button{
+
+      position:absolute;
+      bottom: 0;
+
+
+    }
+
+    .order-button{
+
+      left:50%;
+
+    }
+
+    .vendor-cart-order{
+
+        position: relative;
+        height: 400px;
+    }
+
+
+
+  }
+
+
+</style>
+
+<div class="container pb-5 mb-5">
+
+  <div class="cart-heading pb-3">
+
+    <p class="m-0">WHOLESALE</p>
+    <h3>CURRENT OPEN PURCHASE ORDERS</h3>
+
+  </div>
+
+  {% if cart.item_count > 0 %}
+
+  	{% assign prev_vendor_name = "" %}
+  	{% assign vendorVariantList = "" %}
+  	{% assign vendorVariantListQty = "" %}
+  	{% assign vendorItemsSubTotal = 0 %}
+
+  	{% comment %} Sort cart by vendor... wtf? that was easy (after hours of making my own and finding this) {% endcomment %}
+  	{% assign cartItemsVendorSort = cart.items | sort: 'vendor' %}
+
+  	{% comment %} Main Cart Loop {% endcomment %}
+  	{% for item in cartItemsVendorSort %}
+
+  		{% if prev_vendor_name != item.vendor %}
+
+  			{% assign prev_vendor_name = item.vendor %}
+  			{% assign vendorVariantList = item.variant_id %}
+        {% assign vendorShip = item.product.metafields['additional_info']['ship-date-product']%}
+  			{% assign vendorVariantListQty = item.quantity %}
+  			{% assign vendorItemsSubTotal = item.price %}
+        {% assign vendorItemsTotal = item.price | times: item.quantity %}
+
+  			<div class="vendor-wrapper pr-0 pl-0">
+
+
+          <div class="vendor-cart">
+
+            <div class="d-block pt-4 d-md-none">
+              <p class="" >{{ item.product.vendor }}</p>
+            </div>
+
+            <div class="d-block pb-4 d-md-none">
+              <p class="">P.O. #445</p>
+            </div>
+
+            <ul class="vendor-items">
+
+              {% else %}
+
+              {% assign vendorVariantList = vendorVariantList | append: "," | append: item.variant_id %}
+  			      {% assign vendorVariantListQty = vendorVariantListQty | append: "," | append: item.quantity %}
+              {% assign vendorItemsSubTotal = vendorItemsTotal | plus: item.price %}
+
+              {% endif %}
+
+
+              <li class="item" data-variant-id="{{ item.variant_id }}">
+
+                	<!-- image -->
+                	<img class="pb-2" src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}"><br>
+
+                    <!-- title -->
+                    <p class="d-inline-block">
+                      <a href="{{ item.url }}" class="cart__product-name">
+                        {{ item.product.title }} {% if item.quantity > 1 %} ({{ item.quantity }}){% endif %}
+                      </a>
+                    </p>
+
+                    <!-- Remove Item -->
+                    <button class=" p-0 remove-button d-inline-block">
+                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
+                        <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
+                      </svg>
+                    </button>
+
+                  <p class="cart__product-meta productcart-type mb-0">
+                    {{ item.product.type}}
+                  </p>
+                  {% if item.variant.title contains 'Default' %}
+                    <br>
+                  {% else %}
+                  <p class="cart__product-meta productcart-varienttitle">
+                    {{ item.variant.title }}
+                  </p>
+                  {% endif %}
+
+                	<!-- Item Properties -->
+                	<div>
+
+                	{% assign property_size = item.properties | size %}
+                      {% if property_size > 0 %}
+                        {% for p in item.properties %}
+                          {% assign first_character_in_key = p.first | truncate: 1, '' %}
+                          {% unless p.last == blank or first_character_in_key == '_' %}
+                            {{ p.first }}:
+
+                            {% if p.last contains '/uploads/' %}
+                              <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                            {% else %}
+                              {{ p.last }}
+                            {% endif %}
+
+                            <br>
+                          {% endunless %}
+                        {% endfor %}
+                      {% endif %}
+
+                	</div>
+
+                	<!-- Price -->
+                	<!-- <div>
+                  {%- if item.original_line_price != item.final_line_price -%}
+                        <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+                        <del class="cart__price">{{ item.original_line_price | money }}</del>
+                        <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
+                        <span class="order-discount cart__price">{{ item.final_line_price | money }}</span>
+                      {%- else -%}
+                        <span class="cart__price">{{ item.original_line_price | money }}</span>
+                      {%- endif -%}
+                	</div>  -->
+
+                	<!-- Unit Price Measruement -->
+                	<div>
+
+                    {%- if item.unit_price_measurement -%}
+
+                    <span class="visually-hidden">{{ 'products.general.unit_price' | t }}</span>
+                        <span class="cart__unit-price">
+                          {%- capture unit_price_separator -%}
+                            <span aria-hidden="true">/</span><span class="visually-hidden">&nbsp;{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
+                          {%- endcapture -%}
+                          {%- capture unit_price_base_unit -%}
+                            {%- if item.unit_price_measurement.reference_value != 1 -%}
+                              {{- item.unit_price_measurement.reference_value -}}
+                            {%- endif -%}
+                            {{ item.unit_price_measurement.reference_unit }}
+                          {%- endcapture -%}
+
+                          <span data-unit-price>{{ item.unit_price | money }}</span>{{- unit_price_separator -}}{{- unit_price_base_unit -}}
+                        </span>
+                      {%- endif -%}
+
+                      {%- if item.line_level_discount_allocations != blank -%}
+                        <ul class="order-discount order-discount--list order-discount--title order-discount--cart-list" aria-label="{{ 'customer.order.discount' | t }}">
+                          {%- for discount_allocation in item.line_level_discount_allocations -%}
+                            <li class="order-discount__item">
+                              <span class="icon icon-saletag" aria-hidden="true"></span>{{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                	</div>
+
+                	<!-- Link -->
+                	<a class='btn editbtn mt-2' href="{{ item.url | within: collections.all }}">EDIT</a>
+
+              </li>
+
+          {% if prev_vendor_name != cartItemsVendorSort[forloop.index].vendor %}
+
+              </ul>
+
+              <div class="vendor-cart-order" data-variants="{{ vendorVariantList }}" data-variants-qty="{{ vendorVariantListQty }}">
+
+              <div class="d-md-block pt-3 d-none">
+                <p class="pl-4" >{{ item.product.vendor }}</p>
+              </div>
+
+              <div class="d-md-block pb-3 d-none">
+                <p class="pl-4">P.O. #445</p>
+              </div>
+
+              <div class="row d-flex m-0 justify-content-between subtotal-cart pt-2">
+                <p class="pl-md-4 cartinfo">SUBTOTAL</p>
+                <h3 class="cartinfo">{{cart.total_price | money }} EUR</h3>
+
+              </div>
+
+              <div class="row d-flex m-0 justify-content-between payment-cart pt-2">
+                <p class="pl-md-4 cartinfo">PAYMENT REQUIRED</p>
+                <h3 class="cartinfo">{{ vendorItemsSubTotal | money }} EUR</h3>
+              </div>
+
+              <div class="row d-flex m-0 mb-3 mb-md-0 justify-content-between shipping-cart pt-2">
+                <p class="pl-md-4 cartinfo">ESTIMATED SHIPPING DATE</p>
+                <h3 class="cartinfo">{{ vendorShip }}</h3>
+              </div>
+
+                <a class="d-none d-md-inline-block cancel-vendor-order" href="#"> CANCEL </a>
+
+                <button class="d-block d-md-inline-block order-button btn">Place Order</button>
+
+                <a class="d-block pl-0 pb-3 pb-md-0 cancel-vendor-order pt-3 d-md-none" href="#"> CANCEL </a>
+
+
+              </div>
+
+            </div>
+
+          </div>
+
+  		{% assign vendorVariantList = "" %}
+  		{% assign vendorVariantListQty = "" %}
+  		{% assign vendorItemsSubTotal = 0 %}
+
+  		{% endif %}
+
+  	{% endfor %}
+
+</div>
+
+
+	<script>
+
+      // !!!!! Define at top for page
+      var accessToken = "{{ shopifyStorefrontToken }}";
+		
+      function mapVariantIds( variantId ){
+        console.log(variantId);
+        return btoa( "gid://shopify/ProductVariant/" + variantId );
+      }
+      
+      function createCart( variants, quantities ) {
+		
+        console.log(variants, quantities);
+        
+        // Create GraphQL Compatible Variant IDs
+        var variantsIDsB64 = variants.map(mapVariantIds);
+		console.log(variantsIDsB64);      
+        // Get All Quantities
+        var variantsQty = quantities;
+
+        // Create the Variables JSON Object to be submitted along the GraphQL query
+        var graphQLVariables = {input:{lineItems:[]}};
+
+        // Loop thru variants and create final variables object
+        for ( var variantId = 0; variantId <= variantsIDsB64.length-1; variantId++ )
+        {
+
+          graphQLVariables["input"]["lineItems"][variantId] = {
+            variantId:variantsIDsB64[variantId],
+           	quantity: Number(variantsQty[variantId])
+          };
+
+        }
+
+      	// Init settings for AJAX Request
+      	var settings = {
+           "url": location.origin + "/api/2019-07/graphql",
+           "method": "POST",
+           "timeout": 0,
+           "headers": {
+             "X-Shopify-Storefront-Access-Token": accessToken,
+             "Accept": "application/json",
+             "Content-Type": "application/json"
+           },
+           "data": JSON.stringify({
+             query: "mutation CheckoutCreate ($input: CheckoutCreateInput!) {\r\n  checkoutCreate(input: $input)\r\n  {\r\n    checkout {\r\n      id\r\n      webUrl\r\n    }\r\n  }\r\n}",
+             variables: graphQLVariables
+           }),
+          "statusCode": {
+            403: function () {
+            	alert("Dear user, sorry, its not possible to create a cart at this time.\n\nAnd here's the reason why: Create Cart was forbidden.\nCheck that your Access Token is correct.");
+            }
+          }
+        };
+
+      	// Send request...
+        return $.ajax(settings).done(function( response ) {
+
+          	if ( response.errors )
+            {
+              for ( var error in response.errors ){
+
+                var msg = data.errors[error].message;
+
+                console.warn( "Shopify Storefront API Error. See below" );
+               	console.error( msg );
+
+                if ( msg.indexOf('Could not coerce value "1" to Int') ) {
+                	console.log("Probably the quantity was sent as a string when it should be an int. Use Number() to remedy this.");
+                }
+
+              }
+
+              return false;
+
+            }
+
+		});
+
+      }
+
+      // Event: On Order
+      // Event: On Order
+      // Event: On Order
+      jQuery(".order-button").on("click", function() {
+
+        // Get All variants and their quantity associated with this Vendor
+        var vendorCartOrder = this.parentElement,	//
+        	vcoDataSet = vendorCartOrder.dataset,	// data-variants..
+            variants = vcoDataSet.variants.split(","),
+            quantities = vcoDataSet.variantsQty.split(",")
+    		newCheckout = null;
+
+
+        // Create a cart and then on success, remove those elements from the main cart
+        createCart( variants, quantities )
+
+          .done(
+          	function ( response ) {
+
+            if( response.data ){
+
+                // newCheckout is an object. It contains the new cart id and webUrl
+                newCheckout = response.data.checkoutCreate.checkout;
+
+              	var updates = createUpdatesFromVariants( variants );
+
+              	// Remove these items from the main checkout..
+				var e = {
+                    type: "POST",
+                    url: "/cart/update.js",
+                    data: updates,
+                    dataType: "json",
+                    success: function(t) {
+                        console.log("items removed");
+                    },
+                    error: function(t, r) {
+
+                    }
+                };
+
+    			$.ajax(e).done(function( response ) {
+
+                  // Take user to cart
+                  location.href = newCheckout.webUrl;
+
+				});
+
+            }
+
+          }
+          );
+
+	  });
+
+      // Event: On Remove Single Item
+      // Event: On Remove Single Item
+      // Event: On Remove Single Item
+      jQuery(".remove-button").on("click", function() {
+
+        var li = this.parentElement;
+            vendorItems = this.parentElement.parentElement;
+
+        // Remove Item from Shopify Cart
+        Shopify.removeItem( li.dataset.variantId, function(updatedCart) {
+        	console.log(updatedCart);
+        });
+
+        // Remove Item from view on the cart page
+        jQuery( li ).remove();
+
+        // Remove Vendor if all items come to 0
+        if ( vendorItems.childElementCount == 0 ) {
+
+          // Declared it here to save on memory
+          var vendorWrapper = vendorItems.parentElement.parentElement;
+
+          jQuery( vendorWrapper ).remove();
+        }
+
+      });
+
+      // Event: On Cancel Order
+      // Event: On Cancel Order
+      // Event: On Cancel Order
+      jQuery('.cancel-vendor-order').on("click", function(e) {
+
+        e.preventDefault();
+
+        var vendorCartOrder = this.parentElement,	//
+        	vcoDataSet = vendorCartOrder.dataset,	// data-variants="3424324325325,4324325325,.."
+            variants = vcoDataSet.variants.split(",");
+
+        // Grab all items in the vendor and create request data object
+        var updates = createUpdatesFromVariants( variants );
+
+
+        // Remove from Shopify Cart (the main cart in the system)...
+        var e = {
+          type: "POST",
+          url: "/cart/update.js",
+          data: updates,
+          dataType: "json",
+          success: function(t) {
+            console.log("items removed");
+          },
+          error: function(t, r) {
+			console.log("error removing items from cart on last action. Cart might be empty or no longer has this variant");
+          }
+        }
+
+        $.ajax(e).done(function( response ) {
+
+          // Update view. Remove parent vendor cart...
+          jQuery( vendorCartOrder ).parents('.vendor-cart').remove();
+
+        });
+
+
+      });
+
+      function createUpdatesFromVariants( variants ) {
+
+      	var updates = { updates: {} };
+
+        for ( var varIndex = 0; varIndex < variants.length; varIndex++ ){
+          updates.updates[variants[varIndex]] = 0;
+        }
+
+        return updates;
+
+      }
+
+
+    </script>
+
+{% else %}
+
+	<!-- Your cart is empty -->
+
+{% endif %}

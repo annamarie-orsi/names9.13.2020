@@ -1,0 +1,404 @@
+{% if template == "index"%}<div id="introdiv"></div>{% endif%}
+{% if template == "index"%}<div id="logoimage">
+
+{{section.settings.logo}}
+
+
+</div>{% endif%}
+
+<nav class="navbar-names w-100 bg-names-transparent" id="nav">
+
+  <div class="bg-names1 bg-tan1" id="tanbackground">
+
+    <div class="d-flex bg-tan1 py-2{% if template != "index" %} bg-dark {% endif %} justify-content-between" id="backgroundimagenav1">
+
+      <a class="nav-item nav-link my-auto pl-5 d-none d-md-block fc-names" href="{{ section.settings.link1href }}">{{ section.settings.link1}}</a>
+
+      <a class="navbar-brand text-left text-md-center m-0 " href="/index">
+
+      <svg id="names_1_logo" data-name="Layer 1" class="{% if template == 'index'%}d-none{% endif%} ml-0 m-md-auto pl-4 pl-md-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 727.4 144.48"><defs><style>.cls-1{fill:#ede9df;}</style></defs><g id="Слой_2" data-name="Слой 2"><g id="Слой_1-2" data-name="Слой 1-2"><polygon class="cls-1" points="106.91 119.92 29.14 3.35 0 3.35 0 141.18 18.5 141.18 18.5 20.88 98.84 141.18 125.22 141.18 125.22 3.35 106.91 3.35 106.91 119.92"/><polygon class="cls-1" points="383.68 118.14 341.35 3.35 308.86 3.35 308.86 141.18 327.17 141.18 327.17 18.12 372.26 141.18 394.12 141.18 439.6 19.3 439.6 141.18 457.91 141.18 457.91 3.35 427 3.35 383.68 118.14"/><polygon class="cls-1" points="510.93 80.35 591.64 80.35 591.64 63.02 510.93 63.02 510.93 21.07 592.83 21.07 592.83 3.35 491.25 3.35 491.25 141.18 594.02 141.18 594.02 123.46 510.93 123.46 510.93 80.35"/><path class="cls-1" d="M191.66,83.38l24.9-63.29,24.7,63.29Zm12.3-80-55.71,137.8h20.67l16.39-41.66h62.25l16.26,41.66h21.07L230.16,3.35Z"/><path class="cls-1" d="M691.19,65l-30.72-7.87C644.92,52.78,639,47.07,639,38.4c0-12.6,12.41-20.07,33.87-20.07,19.49,0,35.83,6.09,48.63,16.72V14.77C711.28,7.09,695.33,0,673.08,0c-33.66,0-54,16.55-54,39.39,0,15.55,9.26,28.35,33.68,35l30.31,7.47c18.71,5.51,24,11.43,24,21.46,0,15.17-12.21,22.85-34.26,22.85-21.07,0-38.19-7.29-54-19.3v20.47c14.57,10.84,34.06,17.14,54.34,17.14,33.47,0,54.15-16.93,54.15-42.13,0-17.73-10-30.12-36.23-37.42"/></g></g></svg>
+      </a>
+
+      {% if customer.tags contains "Approved" %}
+
+      <div class="row">
+        <a class="nav-item d-md-inline-block d-none nav-link my-auto px-1 fc-names " href="/account">  ACCOUNT, </a>
+        <a class="nav-item d-md-inline-block d-none nav-link my-auto px-0 fc-names " href="/cart">  ORDER — {{cart.total_price | money }} EUR </a>
+      </div>
+
+      {% else %}
+      <a class="nav-item nav-link my-auto d-none d-md-block pr-5 fc-names" href="{{ section.settings.link2href }}" id="megamenuappearindex">  {{ section.settings.link2 }} </a>
+      {% endif %}
+
+      <a class="nav-item nav-link my-auto fc-names d-md-none pr-md-5 pr-4" id="megamenuappearmobileindex">  MENU </a>
+
+    </div>
+
+    <div class="dropdown pb-3 d-none mt-md-5 mx-4 px-4 pt-md-5" id="megamenuindexes">
+
+    <div class="dropdown-content pt-md-5 mt-md-5 pb-4 mb-4" id="dropdowncontent">
+
+      {% if customer.tags contains "Approved" %}
+
+      <div class="row pt-5">
+
+        <div class="col-md col-12 pt-5 pt-md-0 mt-3">
+
+          <h3>{{section.settings.Dropdownheading2}}</h3>
+
+          <a class="my-auto accountmenu d-block py-3 " href="{{ section.settings.link1href }}">{{ section.settings.link1}}</a>
+          <a class="d-block accountmenu my-auto py-3  " href="/account"> ACCOUNT </a>
+          <a class="d-block accountmenu my-auto py-3 " href="/cart">  ORDER — {{cart.total_price | money }} EUR </a>
+
+        </div>
+
+      </div>
+
+      {% else %}
+
+      <div class="row">
+
+        <div class="col-md col-12 pt-5 pt-md-0 mt-3">
+
+          <h3>{{section.settings.Dropdownheading}}</h3>
+
+          <div class="col-9 pr-0 mr-0 pl-0 ml-0 py-4 my-3">
+            <p>{{section.settings.WholesaleParagraph}}</p>
+          </div>
+
+          <a class="wholesalelink" href="{{section.settings.Applylinkhref}}">{{section.settings.Applylink}}</a>
+
+        </div>
+
+        <div class="col-md col-12 pr-0 pt-4 pt-md-0">
+
+          <div class="form-message form-message--success hide" id="ResetSuccess" tabindex="-1">
+            {{ 'customer.recover_password.success' | t }}
+          </div>
+
+          <div id="CustomerLoginForm" class="form-vertical">
+
+            {% form 'customer_login', novalidate: 'novalidate' %}
+
+              {%- if form.errors -%}
+                <div class="form-message form-message--error">
+                  <h2 class="h3 form-message__title " tabindex="-1" data-form-status>{{ 'contact.form.error_heading' | t }}</h2>
+                  {{ form.errors | default_errors }}
+                </div>
+              {%- endif -%}
+              <div class="wrap-input100 validate-input">
+
+                <input
+                  type="email"
+                  placeholder="USERNAME"
+                  name="customer[email]"
+                  id="CustomerEmail"
+                  autocomplete="email"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  class="input100 p-0 pl-1"
+                  {%- if form.errors contains 'form' -%}
+                    class="input--error"
+                    aria-invalid="true"
+                  {%- endif -%}
+                  >
+                  <span class="focus-input100-1"></span>
+                  <span class="focus-input100-2"></span>
+
+              </div>
+
+
+              {% if form.password_needed %}
+
+              <div class="wrap-input100 validate-input">
+
+                <input
+                  type="password"
+                  value=""
+                  placeholder="PASSWORD"
+                  name="customer[password]"
+                  id="CustomerPassword"
+                  class="input100 p-0 pl-1"
+                  {%- if form.errors contains 'form' -%}
+                    class="input--error"
+                    aria-invalid="true"
+                  {%- endif -%}
+                >
+                <span class="focus-input100-1"></span>
+                <span class="focus-input100-2"></span>
+
+              </div>
+
+              {% endif %}
+
+              <div class="row py-2 d-flex justify-content-between">
+
+                <div class="text-center col-12 col-md-7">
+
+                  <input type="submit" class="btn w-100" value="{{ 'customer.login.sign_in' | t }}">
+
+                </div>
+
+                {% if form.password_needed %}
+
+                  <div class="text-center mt-3 mt-md-0 col-12 col-md-5">
+
+                    <a href="#recover" class="btn w-100" id="RecoverPassword">{{ 'customer.login.forgot_password' | t }}</a>
+
+                  </div>
+                {% endif %}
+
+              </div>
+
+            {% endform %}
+
+          </div>
+
+          <div id="RecoverPasswordForm" class="pt-4 pt-md-none hide">
+
+            <div class="text-left">
+              <span id="RecoverHeading">{{ 'customer.recover_password.title' | t }}</span>
+              <h3>{{ 'customer.recover_password.subtext' | t }}</h3>
+            </div>
+
+            <div class="form-vertical">
+              {% form 'recover_customer_password' %}
+
+                {% comment %}
+                  Add a hidden span to indicate the form was submitted succesfully.
+                {% endcomment %}
+
+                {% if form.posted_successfully? %}
+                  <span class="hide reset-password-success"></span>
+                {% endif %}
+
+                <input
+                  type="email"
+                  value=""
+                  name="email"
+                  placeholder="EMAIL"
+                  id="RecoverEmail"
+                  class="input100 p-0 pl-1 input-full{% if form.errors %} input--error{% endif %}"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  {% if form.errors %}
+                    aria-invalid="true"
+                    aria-describedby="RecoverEmail-email-error"
+                  {%- endif -%}
+                  >
+                {%- if form.errors -%}
+                  <span id="RecoverEmail-email-error" class="input-error-message">
+                    <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+                    {% include 'icon-error' %}
+                    <span>{{ form.errors.messages['form'] }}</span>
+                  </span>
+                {%- endif -%}
+
+                <div class="text-center pt-3">
+                  <p>
+                    <input type="submit" class="btn" value="{{ 'customer.recover_password.submit' | t }}">
+                  </p>
+
+                  <h3><a href="#LoginHeading" id="HideRecoverPasswordLink">{{ 'customer.recover_password.cancel' | t }}</a></h3>
+
+                </div>
+              {% endform %}
+            </div>
+
+          </div>
+
+        </div>
+
+        </div>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% if template == "index"%}
+
+<script type="text/javascript">
+
+var intro = document.getElementById("introdiv");
+var background = document.getElementById("backgroundimagenav1");
+var navbar = document.getElementById("nav");
+var logo = document.getElementById("names_1_logo");
+var megaMenu = document.getElementById("megamenuindexes");
+var dcontent = document.getElementById("dropdowncontent");
+var wholesale = document.getElementById("megamenuappearindex");
+
+intro.offsetBottom = intro.offsetTop + intro.offsetHeight;
+var sticky = intro.offsetBottom;
+
+window.onscroll = function() { namesFunction()};
+
+function namesFunction() {
+
+  if (window.pageYOffset >= sticky) {
+
+
+    background.classList.add("bg-names")
+    background.classList.add("bg-dark");
+    logo.classList.remove("d-none")
+
+  } else {
+
+
+    background.classList.remove("bg-names");
+    background.classList.remove("bg-dark");
+    logo.classList.add("d-none")
+  }
+}
+
+
+navbar.addEventListener("mouseenter",function() {
+
+
+
+  if (window.pageYOffset <= sticky){
+
+
+    background.classList.add("bg-names")
+    background.classList.add("bg-dark");
+    logo.classList.remove("d-none")
+
+  }});
+
+  navbar.addEventListener("mouseleave",function() {
+
+
+
+    if (window.pageYOffset <= sticky){
+
+      background.classList.remove("bg-names")
+      background.classList.remove("bg-dark");
+      logo.classList.add("d-none")
+
+    }});
+
+
+</script>
+
+{% endif%}
+
+<script type="text/javascript">
+
+
+$('#megamenuappearindex').mouseenter(
+    function(){ $('#megamenuindexes').removeClass('d-none')}
+);
+
+$('#nav').mouseleave(
+    function(){ $('#megamenuindexes').addClass('d-none')}
+);
+
+$('#nav').hover(
+
+    function(){ $('#tanbackground').addClass('bg-tan') },
+    function(){ $('#tanbackground').removeClass('bg-tan')}
+
+)
+
+
+$('#megamenuappearmobileindex').on('click', function() {
+   $("#megamenuindexes").toggleClass('d-none');
+});
+
+</script>
+
+{% schema %}
+
+{
+  "name": {
+    "en": "Site Nav"
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo",
+      "label": {
+        "en": "Logo SVG"
+      }
+    },
+    {
+      "type": "text",
+      "id": "link1",
+      "label": {
+        "en": "Link 1"
+      }
+    },
+    {
+      "type": "url",
+      "id": "link1href",
+      "label": {
+        "en": "Link 1 href"
+      }
+    },
+    {
+      "type": "text",
+      "id": "link2",
+      "label": {
+        "en": "Link 2"
+      }
+    },
+    {
+      "type": "url",
+      "id": "link2href",
+      "label": {
+        "en": "Link 2 href"
+      }
+    },
+    {
+      "type": "text",
+      "id": "Dropdownheading",
+      "label": {
+        "en": "Drop Down Heading"
+      }
+    },
+    {
+      "type": "text",
+      "id": "Dropdownheading2",
+      "label": {
+        "en": "Drop Down Heading Account"
+      }
+    },
+    {
+      "type": "text",
+      "id": "WholesaleParagraph",
+      "label": {
+        "en": "Wholesale Paragraph"
+      }
+    },
+    {
+      "type": "text",
+      "id": "Applylink",
+      "label": {
+        "en": "Apply Link Text"
+      }
+    },
+    {
+      "type": "url",
+      "id": "Applylinkhref",
+      "label": {
+        "en": "Apply Link Text href"
+      }
+    }
+  ],
+  "presets": [
+    {
+      "name": {
+        "en": "Link Text"
+      },
+      "category": {
+        "en": "Text"
+      }
+    }
+  ]
+}
+{% endschema %}

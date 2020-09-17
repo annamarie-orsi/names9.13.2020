@@ -1,0 +1,462 @@
+{% capture email_title %}Thank you for your purchase! {% endcapture %}
+  {% capture email_body %}
+    {% if requires_shipping %}
+    {% case delivery_method %}
+        {% when 'pick-up' %}
+          You’ll receive an email when your order is ready for pickup.
+        {% when 'local' %}
+          Hi {{ customer.first_name }}, we're getting your order ready for delivery.
+        {% else %}
+          Hi {{ customer.first_name }}, we're getting your order ready to be shipped. We will notify you when it has been sent.
+      {% endcase %}
+        {% if delivery_instructions != blank  %}
+          <p><b>Delivery information:</b> {{ delivery_instructions }}</p>
+        {% endif %}
+    {% endif %}
+  {% endcapture %}
+
+  <!DOCTYPE html>
+  <html lang="en" style="background-color:#EDE9DF">
+    <head>
+    <title>{{ email_title }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="/assets/notifications/styles.css">
+    <style>
+
+      .emailimage {
+        width: 100% !important;
+        height: auto !important; }
+
+      .borderb {
+         border-bottom: 2px solid black;
+       }
+
+       .row{
+
+         margin: 0px !important;
+
+       }
+
+       .efoooter{
+
+         margin-bottom: 100px;
+
+       }
+
+       .emailfooter{
+
+         font-size: 16px;
+         font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue";
+         color:black !important;
+         display: block;
+
+       }
+
+       .order-list__product-image{
+
+         border-radius: 0;
+
+       }
+
+       .text-right{
+
+         text-align: right;
+
+       }
+
+       .text-left {
+
+         text-align: left;
+
+       }
+      .summaryarea{
+        padding-left: 40px;
+        padding-right: 40px;
+      }
+
+      .container{
+        margin: auto;
+      }
+
+      .ebody{
+
+        margin: 65px;
+
+      }
+
+      .ebodycust{
+
+        margin-left: 65px;
+        margin-right: 65px;
+        margin-top: 175px;
+
+      }
+
+      .order-list__item-price {
+        font-size: 12px;
+      }
+      .big {
+        font-size: 75px;
+        padding-bottom: 75px;
+        width: 100%;
+        text-align:left;
+      }
+
+      .normal {
+        font-size: 16px;
+        font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue";
+        color:black !important;
+        width: 75%;
+        text-align:left;
+        margin-left:0px;
+        padding-left: 0px;
+      }
+
+      h3 {
+        font-size: 16px;
+        font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue";
+        color:black !important;
+      }
+
+      .summ {
+        margin-bottom: 100px;
+      }
+
+      p {
+        font-size: 16px;
+        font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue";
+        color:black !important;
+      }
+
+      td, tr, table {
+        border:none !important;
+      }
+
+      .customer-title {
+        padding-bottom: 20px;
+        margin: 0px;
+        padding-top: 15px;
+      }
+
+      .d-flex {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .customer-info__item {
+        width: 40%;
+        padding: 0px 0px;
+      }
+
+      .summtext {
+        display: block;
+        text-align: left;
+      }
+
+    </style>
+  </head>
+
+  <body>
+
+    <table class="body">
+
+      <tr>
+
+        <td>
+
+          <table class="header row">
+
+            <img src="https://cdn.shopify.com/s/files/1/0398/2068/9563/files/Screen_Shot_2020-09-15_at_7.59.57_PM.png?v=1600214719" class="emailimage" alt="">
+
+          </table>
+
+            <div class="summ ebody">
+
+                  <h1 class="big">Order Request</h1>
+
+                  <div class="summtext">
+
+
+                                        <p class="normal">As soon as your order request is approved, NAMES will email you the final
+                                    confirmation and invoice issued by the brand.<br><br>
+                                    If you change your mind about your selection, please contact our support team
+                                    within 24 hours at sales@names.life</p>
+
+
+                  </div>
+
+
+              </div>
+
+
+                  <div class="customertable ebodycust">
+
+                    <div class="row d-flex justify-content-between">
+
+                      <div class="customer-info__item">
+
+                        <h3 class="customer-title">Billing Information</h3>
+
+                        <p class="borderb"></p>
+
+                        <p class="customerpadding">{{ billing_address | format_address }}</p>
+
+                      </div>
+
+
+                      <div class="customer-info__item">
+
+                        <h3 class="customer-title">Shipping Information</h3>
+
+                        <p class="borderb"></p>
+
+                        <p class="customerpadding">{{ shipping_address | format_address }}</p>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+
+
+    <table class="row section">
+    <tr>
+      <td class="section__cell">
+        <center>
+          <div class="ebody">
+                <h3 class="text-left">Order Request Summary</h3>
+                <p class="borderb"></p>
+
+          </div>
+          <table class="container">
+            <tr>
+              <td>
+
+
+  <table class="row">
+    {% for line in subtotal_line_items %}
+    <tr class="order-list__item">
+      <td class="order-list__item__cell">
+        <table>
+          <td>
+            {% if line.image %}
+              <img src="{{ line | img_url: 'grande' }}" align="left" width="150" height="150" class="order-list__product-image"/>
+            {% endif %}
+          </td>
+          <td class="order-list__product-description-cell">
+
+
+            <p>{{ line.title }}</p><br/>
+
+            {% if line.variant_title != 'Default Title' %}
+              <span class="order-list__item-variant">{{ line.variant_title }}</span><br/>
+            {% endif %}
+
+
+
+          </td>
+            <td class="order-list__price-cell">
+
+              <p class="text-right moneypad">
+                {% if line.final_line_price > 0 %}
+                  {{ line.final_line_price | money_without_currency }}
+                {% else %}
+                  Free
+                {% endif %}
+              </p>
+            </td>
+            <td class="order-list__price-cell">
+            <p>EUR</p>
+            </td>
+        </table>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <table class="row subtotal-lines">
+    <tr>
+      <td class="subtotal-spacer"></td>
+      <td>
+        <table class="row subtotal-table">
+          {% for discount_application in discount_applications %}
+            {% if discount_application.target_selection == 'all' %}
+              {% capture discount_title %}
+                {% if discount_application.title %}
+                  {{ discount_application.title | upcase }}
+                {% else %}
+                  Discount
+                {% endif %}
+              {% endcapture %}
+
+
+            {% endif %}
+          {% endfor %}
+
+
+  <tr class="subtotal-line">
+    <td class="subtotal-line__title">
+      <p>
+        Subtotal
+      </p>
+    </td>
+    <td class="">
+      {{ subtotal_price | money_without_currency }}
+    </td>
+    <td class="text-right">
+      EUR
+    </td>
+  </tr>
+
+    {% if delivery_method == 'pick-up' %}
+
+  <tr class="subtotal-line">
+    <td class="subtotal-line__title">
+      <p>
+        Pickup
+      </p>
+    </td>
+    <td class="">
+      {{ shipping_price | money_without_currency }}
+    </td>
+    <td class="text-right">
+      EUR
+    </td>
+  </tr>
+
+          {% else %}
+
+  <tr class="subtotal-line">
+    <td class="subtotal-line__title">
+      <p>
+        Shipping & Handling
+      </p>
+    </td>
+    <td class="">
+      {{ shipping_price | money_without_currency }}
+    </td>
+    <td class="text-right">
+      EUR
+    </td>
+  </tr>
+
+          {% endif %}
+
+
+
+  <tr class="subtotal-line">
+    <td class="subtotal-line__title">
+      <p>
+        Tax
+      </p>
+    </td>
+    <td class="">
+      {{ tax_price | money_without_currency }}
+    </td>
+    <td class="text-right">
+      EUR
+    </td>
+  </tr>
+
+
+          {% if total_tip and total_tip > 0 %}
+
+  <tr class="subtotal-line">
+    <td class="subtotal-line__title">
+      <p>
+        Tip
+      </p>
+    </td>
+    <td class="">
+      {{ total_tip | money_without_currency }}
+    </td>
+    <td class="text-right">
+      EUR
+    </td>
+  </tr>
+
+          {% endif %}
+        </table>
+        <table class="row subtotal-table subtotal-table--total">
+
+  <tr class="">
+    <td class="">
+      <p>
+        Grand Total (incl. Tax)
+      </p>
+    </td>
+    <td class="">
+      {{ total_price | money_without_currency }}
+    </td>
+    <td class="text-right">
+      EUR
+    </td>
+  </tr>
+
+        </table>
+
+
+
+        {% assign transaction_size = 0 %}
+        {% assign transaction_amount = 0 %}
+        {% for transaction in transactions %}
+          {% unless transaction.kind == "capture" or transaction.kind == "void" %}
+            {% assign transaction_size = transaction_size | plus: 1 %}
+            {% assign transaction_amount = transaction_amount | plus: transaction.amount %}
+          {% endunless %}
+        {% endfor %}
+
+        {% if transaction_size > 1 or transaction_amount < total_price %}
+          <table class="row subtotal-table">
+            <tr><td colspan="2" class="subtotal-table__line"></td></tr>
+            <tr><td colspan="2" class="subtotal-table__small-space"></td></tr>
+
+
+          </table>
+        {% endif %}
+      </td>
+    </tr>
+  </table>
+
+
+              </td>
+            </tr>
+          </table>
+        </center>
+      </td>
+    </tr>
+  </table>
+
+
+
+        <div class="row ebody efoooter">
+
+          <p class="borderb"></p>
+
+          <div class=" d-flex">
+
+            <div class="text-left">
+              <a class="emailfooter" href="#">HELP</a>
+              <a class="emailfooter" href="">CONACT US</a>
+            </div>
+
+            <div class="text-right">
+              <a class="emailfooter" href="#">HELP</a>
+              <a class="emailfooter" href="">CONACT US</a>
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+          </td>
+        </tr>
+      </table>
+    </body>
+  </html>

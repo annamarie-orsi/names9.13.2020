@@ -1,0 +1,184 @@
+{% assign tester = false %}
+{% assign type = product.type | downcase %}
+{% assign vendor = product.vendor | downcase %}
+
+{% if type == 'fragrances' or type contains 'care' %}
+  {% assign tester = true %}
+{% elsif
+  vendor contains 'selahatin' or
+  vendor contains 'colekt' or
+  vendor contains 'grown' or
+  vendor contains 'corpus'
+  %}
+  {% assign tester = true %}
+{% endif %}
+
+{% comment %}
+	product variant selector
+
+	if the product is not setup with any variants, don't show a selector
+	if the product is setup with a single variant, it will show. To remove this behavior,
+
+	{% raw %}
+
+	{% if product.has_only_default_variant %}
+
+	to
+
+	{% if product.has_only_default_variant or product.variants.size == 1 %}
+
+	{% endraw %}
+
+{% endcomment %}
+
+{% unless product == empty or product.variants.size == 0 %}
+
+	{% if product.has_only_default_variant %}
+		
+		<input name="id" value="{{ product.first_available_variant.id }}" type="hidden">
+
+	{% else %}
+
+		<div id="variants-wrapper" class="" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+          <div class="variants-content">
+
+            <h3 class="variantheading mb-0 py-2">ORDER DETAILS</h3>
+
+              <div class="list-group" id="variant-list" role="tablist">
+                {% for variant in product.variants %}
+                <a class="pt-3 list-group-item list-group-item-action d-flex justify-content-between m-0 row {% if variant == product.selected_or_first_available_variant %}active{% endif %}" id="{{ variant.id }}" data-toggle="list" role="tab" aria-controls="home">
+                  <p class="text-left col-6 vtext">{{ variant.title }}</p><p class="text-right vtext">&darr;</p>
+                </a>
+                {% endfor %}
+                {% if tester == true %}
+                <a class="pt-3 list-group-item list-group-item-action d-flex justify-content-between m-0 row" data-toggle="list" role="tab" aria-controls="home">
+                  <p class="text-left col-6 vtext">Include Tester</p><p class="text-right vtext">&darr;</p>
+                </a>
+                {% endif %}
+              </div>
+          </div>
+        </div>
+
+        <input name="id" value="{{ product.selected_or_first_available_variant.id }}" type="hidden">
+
+		<style>
+
+          #variants-wrapper * {
+						background-color: #fafafa;
+            max-width: 300px;
+          }
+
+					#variants-wrapper:focus {
+    		outline: none !important;
+				}
+
+					.variantheading{
+
+						border-bottom: 1px dotted #3d3b36;
+
+					}
+
+          #variants-wrapper {
+            position: relative;
+            transition: opacity 0.3s;
+						padding-bottom: 25px;
+          }
+
+          #variants-wrapper.modal .variant-list-c {
+            padding: 1em;
+            text-align: left;
+          }
+
+					#variantaddtocart{
+
+						background-color: #fafafa !important;
+						color: #3d3b36 !important;
+
+					}
+
+					#variantaddtocart:hover {
+
+						background-color: #3d3b36 !important;
+						color: #fafafa !important;
+
+					}
+
+          #variants-wrapper .variants-content {
+            text-align: center;
+						margin: auto;
+          }
+
+					.list-group-item{
+						border:0px;
+						border-bottom: 1px solid #3d3b36;
+						padding: 0px;
+
+					}
+
+					.vtext{
+
+						font-size: 12px!important;
+
+					}
+
+					.list-group-item.active{
+
+						border-bottom: 2px solid black;
+
+					}
+
+					.list-group{
+
+						border-radius: 0rem;
+
+					}
+
+          @media (min-width: 786px) {
+
+            #variants-wrapper {
+             	opacity: 0;
+            }
+
+            #variants-wrapper.show {
+              opacity: 1;
+            }
+
+          }
+
+		</style>
+
+		<script>
+
+          var $varModal, $varListGroupItms, $varAddToCart;
+
+          $(function(){
+
+            var $varModal = $('#variants-wrapper'),
+                $varListGroupItms = $('.list-group-item', '#variant-list'),
+                $varAddToCart = $('input[type=submit].add-to-cart');
+								$varShip = $('#shipdateproduct');
+
+        	// Change Variant Id on variant select..
+          	$varListGroupItms.on('click', function(){
+            	$('input[name=id]').attr('value', this.id);
+            });
+
+          	// Handle the modal window on hover of the add to cart
+            $varAddToCart
+						.on("mouseover", function() {
+                    console.log("add to cart mouseover");
+                    $varModal.addClass('show');
+										$varShip.removeClass('d-none');
+
+                })
+            	.on("click", function(){
+            		$varModal.removeClass('show');
+            	});
+          });
+		</script>
+
+	{% endif %}
+
+	<input type="submit" value="ADD TO ORDER" id="variantaddtocart" class="add-to-cart col-12 btn" />
+
+{% endunless %}

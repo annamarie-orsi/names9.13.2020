@@ -1,0 +1,55 @@
+<div class="container pt-5" data-section-id="{{ section.id }}" data-section-type="quote-section">
+
+  <div class="row mx-lg-5 mx-2 pb-4">
+
+    <div class="namesrichtext mx-lg-5 pt-lg-5 mb-lg-5 mt-lg-5">
+
+      <h1 class="blockquote d-inline">
+
+        {{ section.settings.quotetext }}
+
+      </h1>
+
+      <span> {{ section.settings.author }} </span>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+{% schema %}
+
+{
+  "name": {
+    "en": "Quote text"
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "quotetext",
+      "label": {
+        "en": "Text"
+      }
+    },
+    {
+      "type": "text",
+      "id": "author",
+      "label": {
+        "en": "Text"
+      }
+    }
+  ],
+  "presets": [
+    {
+      "name": {
+        "en": "Rich text"
+      },
+      "category": {
+        "en": "Text"
+      }
+    }
+  ]
+}
+{% endschema %}
