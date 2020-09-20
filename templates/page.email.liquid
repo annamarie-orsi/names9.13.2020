@@ -44,6 +44,12 @@
 
        }
 
+       .paddmon{
+
+         padding-right: 15px;
+
+       }
+
        .emailfooter{
 
          font-size: 16px;
@@ -62,6 +68,8 @@
        .text-right{
 
          text-align: right;
+         font-size: 16px;
+         font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue";
 
        }
 
@@ -90,6 +98,12 @@
         margin-left: 65px;
         margin-right: 65px;
         margin-top: 175px;
+
+      }
+
+      .linkpad{
+
+        padding-top: 10px;
 
       }
 
@@ -136,7 +150,7 @@
       .customer-title {
         padding-bottom: 20px;
         margin: 0px;
-        padding-top: 15px;
+        padding-top: 50px;
       }
 
       .d-flex {
@@ -238,6 +252,25 @@
 
   <table class="row">
     {% for line in subtotal_line_items %}
+
+    <div class="imageandtitle d-flex">
+      {% if line.image %}
+        <img src="{{ line | img_url: 'grande' }}" align="left" width="150" height="150" class="order-list__product-image"/>
+      {% endif %}
+      <p>{{ line.title }}</p><br/>
+    </div>
+
+    <div class="priceflex d-flex">
+      <p class="text-right moneypad">
+        {% if line.final_line_price > 0 %}
+          {{ line.final_line_price | money_without_currency }}
+        {% else %}
+          Free
+        {% endif %}
+      </p>
+    <p>EUR</p>
+    </div>
+
     <tr class="order-list__item">
       <td class="order-list__item__cell">
         <table>
@@ -247,19 +280,13 @@
             {% endif %}
           </td>
           <td class="order-list__product-description-cell">
-
-
             <p>{{ line.title }}</p><br/>
 
             {% if line.variant_title != 'Default Title' %}
               <span class="order-list__item-variant">{{ line.variant_title }}</span><br/>
             {% endif %}
-
-
-
           </td>
             <td class="order-list__price-cell">
-
               <p class="text-right moneypad">
                 {% if line.final_line_price > 0 %}
                   {{ line.final_line_price | money_without_currency }}
@@ -303,7 +330,7 @@
         Subtotal
       </p>
     </td>
-    <td class="">
+    <td class="text-right paddmon">
       {{ subtotal_price | money_without_currency }}
     </td>
     <td class="text-right">
@@ -319,7 +346,7 @@
         Pickup
       </p>
     </td>
-    <td class="">
+    <td class="text-right paddmon">
       {{ shipping_price | money_without_currency }}
     </td>
     <td class="text-right">
@@ -335,7 +362,7 @@
         Shipping & Handling
       </p>
     </td>
-    <td class="">
+    <td class="text-right paddmon">
       {{ shipping_price | money_without_currency }}
     </td>
     <td class="text-right">
@@ -353,7 +380,7 @@
         Tax
       </p>
     </td>
-    <td class="">
+    <td class="text-right paddmon">
       {{ tax_price | money_without_currency }}
     </td>
     <td class="text-right">
@@ -370,7 +397,7 @@
         Tip
       </p>
     </td>
-    <td class="">
+    <td class="text-right paddmon">
       {{ total_tip | money_without_currency }}
     </td>
     <td class="text-right">
@@ -388,7 +415,7 @@
         Grand Total (incl. Tax)
       </p>
     </td>
-    <td class="">
+    <td class="text-right paddmon">
       {{ total_price | money_without_currency }}
     </td>
     <td class="text-right">
@@ -432,20 +459,20 @@
 
 
 
-        <div class="row ebody efoooter">
+        <div class="ebody efoooter">
 
           <p class="borderb"></p>
 
-          <div class=" d-flex">
+          <div class="d-flex ">
 
-            <div class="text-left">
-              <a class="emailfooter" href="#">HELP</a>
-              <a class="emailfooter" href="">CONACT US</a>
+            <div class="text-left linkpad">
+              <a class="emailfooter" href="#">Help</a>
+              <a class="emailfooter" href="">Contact Us</a>
             </div>
 
-            <div class="text-right">
-              <a class="emailfooter" href="#">HELP</a>
-              <a class="emailfooter" href="">CONACT US</a>
+            <div class="text-right linkpad">
+              <a class="emailfooter" href="#">Help</a>
+              <a class="emailfooter" href="">Contact Us</a>
             </div>
 
 
